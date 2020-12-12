@@ -1,0 +1,41 @@
+{% extends "oscar/layout.html" %}
+{% load static %}
+
+{% comment %}
+Keep the same header and footer as the standard layout template but override the 
+main content area to split it into a sidebar and a content block
+{% endcomment %}
+{% block content_wrapper %}
+<section id="advertisement">
+        <div class="container">
+            <img src="{% static 'advertisement.jpg' %}" alt="" />
+        </div>
+</section>
+
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                {% block column_left %}{% endblock %}
+            </div>
+                
+            <div class="col-sm-9 ">
+                <div class="features_items"><!--features_items-->
+                        <h2 class="title text-center mb-4">
+                                {% block header %}
+
+                                    {% block headertext %}{% endblock %}
+
+                                {% endblock %}
+                        </h2>
+                {% include "oscar/partials/alert_messages.html" %}
+                
+                {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+ 
+{% endblock %}

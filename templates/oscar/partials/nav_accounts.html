@@ -1,0 +1,97 @@
+{% load static %}
+
+{% load i18n %}
+<header id="header"><!--header-->
+	<div class="header_top"><!--header_top-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 ">
+					<div class="contactinfo">
+						<ul class="nav nav-pills">
+							<li><a href=""><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+							<li><a href=""><i class="fa fa-envelope"></i> info@domain.com</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="social-icons pull-right">
+						<ul class="nav navbar-nav">
+							<li><a href=""><i class="fa fa-facebook"></i></a></li>
+							<li><a href=""><i class="fa fa-twitter"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!--/header_top-->
+	
+	<div class="header-middle"><!--header-middle-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="logo pull-left">
+						{% include "oscar/partials/brand.html" %}
+					</div>
+				</div>
+				<div class="col-sm-8">
+					{% block nav_account_languages %}
+		            {% if LANGUAGES|length > 1 %}
+		                <form id="language_selector" class="navbar-left navbar-form" action="{% url 'set_language' %}" method="post">
+		                    {% csrf_token %}
+		                    <input name="next" type="hidden" value="{{ language_neutral_url_path }}" />
+		                    <div class="form-group">
+		                        <select name="language" class="form-control">
+		                            {% get_language_info_list for LANGUAGES as languages %}
+		                            {% for language in languages %}
+		                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE%} selected="selected"{% endif %}>
+		                                    {{ language.name_local }}
+		                                </option>
+		                            {% endfor %}
+		                        </select>
+		                    </div>
+		                    <button class="btn btn-default" type="submit" data-loading-text="{% trans 'Submitting...' %}">{% trans "Go" %}</button>
+		                </form>
+		            {% endif %}
+		            {% endblock %}
+					<div class="shop-menu pull-right">
+						<ul class="nav navbar-nav">
+							{% if user.is_authenticated %}
+			                {% block nav_account_navbar_authenticated %}
+			                    <li>
+			                        {% if num_unread_notifications > 0 %}
+			                            {# If user has new notifications - we change account link to go to inbox #}
+			                            <a href="{% url 'customer:notifications-inbox' %}">
+			                                <i class="fa fa-user"></i>
+			                                {% trans "Account" %}
+			                                <span class="label label-warning">{{ num_unread_notifications }}</span>
+			                            </a>
+			                        {% else %}
+			                            <a href="{% url 'customer:summary' %}"><i class="fa fa-user"></i> 
+			                            {% trans "Account" %}</a>
+			                        {% endif %}
+			                    </li>
+			                    {% if user.is_staff or perms.partner.dashboard_access %}
+			                        <li><a href="{% url 'dashboard:index' %}"><i class="icon-list-ul"></i> {% trans "Dashboard" %}</a></li>
+			                    {% endif %}
+			                    <li><a id="logout_link" href="{% url 'customer:logout' %}"><i class="fas fa-sign-out"></i> {% trans "Logout" %}</a></li>
+			                {% endblock %}
+			                {% else %}
+			                    <li><a id="login_link" href="{% url 'customer:login' %}"><i class="fa fa-lock"></i> {% trans "Login or register" %}</a></li>
+			                {% endif %}
+							<li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
+							<li>
+							{% block mini_basket %}{% include "oscar/partials/mini_basket.html" %}{% endblock %}
+
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!--/header-middle-->
+
+{% block navigation %}
+     {% include "oscar/partials/nav_primary.html" %}
+{% endblock %}
+</header>
+
