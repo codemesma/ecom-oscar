@@ -4,45 +4,41 @@
 {% load reviews_tags %}
 
 {% block product %}
-
-    <div class="product-image-wrapper">
-        <div class="single-products">
-            <div class="productinfo text-center">
-                {% block product_image %}
-                    {% with image=product.primary_image %}
-                    {% oscar_thumbnail image.original "x200" upscale=False as thumb %}
+    <article class="product_pod">
+        {% block product_image %}
+            <div class="image_container">
+                {% with image=product.primary_image %}
+                    {% oscar_thumbnail image.original "x155" upscale=False as thumb %}
                     <a href="{{ product.get_absolute_url }}">
-                        <img src="{{ thumb.url }}" alt="{{ product.get_title }}" >
+                        <img src="{{ thumb.url }}" alt="{{ product.get_title }}" class="thumbnail">
                     </a>
                 {% endwith %}
-                {% endblock %}
-                {% block product_review %}
-                {% iffeature "reviews" %}
-                    <p class="star-rating {{ product.rating|as_stars }}">
-                        <i class="icon-star"></i>
-                        <i class="icon-star"></i>
-                        <i class="icon-star"></i>
-                        <i class="icon-star"></i>
-                        <i class="icon-star"></i>
-                    </p>
-                {% endiffeature %}
-            {% endblock %}
-
-            {% block product_title %}
-                    <p>{{ product.get_title|truncatewords:8 }}</p>
-                {% endblock %}
-
-            {% block product_price %}
-                <div class="product_price">
-                    <h2>
-                    {% include "oscar/catalogue/partials/stock_record.html" %}
-                    </h2>
-                    {% if not product.is_parent and not product.has_options %}
-                        {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}
-                    {% endif %}
-                </div>
-            {% endblock %}
             </div>
-        </div>
-    </div>
+        {% endblock %}
+
+        {% block product_review %}
+            {% iffeature "reviews" %}
+                <p class="star-rating {{ product.rating|as_stars }}">
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                    <i class="icon-star"></i>
+                </p>
+            {% endiffeature %}
+        {% endblock %}
+
+        {% block product_title %}
+            <h3><a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a></h3>
+        {% endblock %}
+
+        {% block product_price %}
+            <div class="product_price">
+                {% include "oscar/catalogue/partials/stock_record.html" %}
+                {% if not product.is_parent and not product.has_options %}
+                    {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}
+                {% endif %}
+            </div>
+        {% endblock %}
+    </article>
 {% endblock %}

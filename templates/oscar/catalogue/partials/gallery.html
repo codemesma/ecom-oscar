@@ -17,22 +17,21 @@
                     </div>
                 {% endfor %}
                 </div>
-
-                <!-- Controls -->
-              
-                <a class="item-control left" href="#product_gallery" role="button" data-slide="prev">
-                    <span class="icon-prev fa-stack fa-sm" aria-hidden="true">
-                        <i class="fa fa-angle-left fa-stack-5x"></i>
+                <a class="carousel-control left" href="#product_gallery" role="button" data-slide="prev">
+                    <span class="icon-prev fa-stack fa-lg" aria-hidden="true">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-angle-left fa-stack-1x"></i>
                     </span>
                 </a>
-                <a class="item-control right" href="#product_gallery" role="button" data-slide="next">
-                    <span class="icon-next fa-stack fa-sm" aria-hidden="true">
-                        <i class="fa fa-angle-right fa-stack-5x"></i>
+                <a class="carousel-control right" href="#product_gallery" role="button" data-slide="next">
+                    <span class="icon-next fa-stack fa-lg" aria-hidden="true">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-angle-right fa-stack-1x"></i>
                     </span>
                 </a>
             </div>
 
-            <ol class="carousel-indicators ">
+            <ol class="carousel-indicators thumbnail">
                 {% for image in all_images %}
                     <li data-target="#product_gallery" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}">
                         {% oscar_thumbnail image.original "65x55" crop="center" as thumb %}
